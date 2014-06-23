@@ -323,6 +323,8 @@ class TexturePacker {
 
 	static public function main ():Void {
 		var args:Array<String> = Sys.args();
+		var cwd = args.splice(args.length-1, 1)[0];
+		Sys.setCwd(cwd);
 		var input:String = null, output:String = null, packFileName:String = "pack.atlas";
 
 		if (args.length > 0) {
