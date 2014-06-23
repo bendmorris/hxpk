@@ -1,0 +1,6 @@
+-main hxpk.TexturePacker
+-neko run.n
+-lib openfl
+--remap flash:openfl
+# TODO
+-cp /home/ben/Dev/openfl/backends/native

@@ -1,0 +1,12 @@
+{
+	"name": "hxpk",
+	"url" : "https://github.com/bendmorris/hxpk",
+	"license": "MIT",
+	"tags": [],
+	"description": "A Haxe port of the libGDX TexturePacker tool.",
+	"version": "0.1.0",
+	"contributors": ["bendmorris"],
+	"dependencies": {
+		"openfl": ""
+	}
+}
