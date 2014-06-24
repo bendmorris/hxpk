@@ -35,7 +35,7 @@ class MaxRectsPacker implements Packer {
 			rect.height += settings.paddingY;
 		}
 
-		if (settings.fast) {
+		if (!settings.fast) {
 			if (settings.rotation) {
 				// Sort by longest side if rotation is enabled.
 				inputRects.sort(function (o1:Rect, o2:Rect) {

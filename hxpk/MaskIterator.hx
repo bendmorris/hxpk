@@ -3,7 +3,7 @@ package hxpk;
 
 class MaskIterator {
 	var mask:Mask;
-	var index:Int;
+	var index:Int = 0;
 
 	public function new(mask:Mask) {
 		this.mask = mask;

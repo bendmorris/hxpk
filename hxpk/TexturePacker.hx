@@ -7,6 +7,7 @@ import sys.io.FileOutput;
 import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import flash.geom.Matrix;
 
 
 class TexturePacker {
@@ -67,7 +68,6 @@ class TexturePacker {
 			var packDir:String = outputDir;
 			FileSystem.createDirectory(packDir);
 
-			trace('writing images');
 			writeImages(packFile, pages);
 			try {
 				trace('writing packfile');
@@ -175,27 +175,18 @@ class TexturePacker {
 					}
 				}
 				copy(image, 0, 0, iw, ih, canvas, rectX, rectY, rect.rotated);
-				if (settings.debug) {
-					canvas.fillRect(new Rectangle(rectX, rectY, rect.width - settings.paddingX - 1, rect.height - settings.paddingY - 1), Color.magenta);
-				}
 			}
 
 			if (settings.bleed && !settings.premultiplyAlpha && !(settings.outputFormat.toLowerCase() == "jpg")) {
 				canvas = new ColorBleedEffect().processImage(canvas, 2);
 			}
 
-			if (settings.debug) {
-				canvas.fillRect(new Rectangle(0, 0, width - 1, height - 1), Color.magenta);
-			}
-
 			var error:String = null;
 			try {
-				var newImage:BitmapData = new BitmapData(canvas.width, canvas.height, true, 0);
-				newImage.copyPixels(canvas, canvas.rect, new Point());
-				canvas = newImage;
 				var imageData = canvas.encode(settings.outputFormat, settings.outputFormat.toLowerCase() == "jpg" ? settings.jpegQuality : 1);
 				var fo:FileOutput = sys.io.File.write(outputFile, true);
 				fo.writeString(imageData.toString());
+				fo.close();
 			} catch (e:Dynamic) {
 				error = "Error writing file " + outputFile + ": " + e;
 			}
@@ -210,10 +201,11 @@ class TexturePacker {
 
 	static inline function copy (src:BitmapData, x:Int, y:Int, w:Int, h:Int, dst:BitmapData, dx:Int, dy:Int, rotated:Bool):Void {
 		if (rotated) {
-			// TODO: do it faster with BitmapData.draw
-			for (i in 0 ... w)
-				for (j in 0 ... h)
-					plot(dst, dx + j, dy + w - i - 1, src.getPixel32(x + i, y + j));
+			var m = new Matrix();
+			m.rotate(90);
+			m.tx = x;
+			m.ty = y;
+			dst.draw(src, m, null, null, new Rectangle(dx, dy, w, h));
 		} else {
 			dst.copyPixels(src, new Rectangle(x, y, w, h), new Point(dx, dy));
 		}

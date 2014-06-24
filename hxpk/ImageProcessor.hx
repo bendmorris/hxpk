@@ -155,9 +155,8 @@ class ImageProcessor {
 
 	/** Strips whitespace and returns the rect, or null if the image should be ignored. */
 	private function stripWhitespace (source:BitmapData):Rect {
-		// TODO
 		//if (source == null || (!settings.stripWhitespaceX && !settings.stripWhitespaceY))
-			return new Rect(source, 0, 0, source.width, source.width, false);
+			return new Rect(source, 0, 0, source == null ? 0 : source.width, source == null ? 0 : source.height, false);
 		/*final byte[] a = new byte[1];
 		int top = 0;
 		int bottom = source.width;
