@@ -4,3 +4,4 @@
 --remap flash:openfl
 # TODO
 -cp /home/ben/Dev/openfl/backends/native
+-D hxpk_cli

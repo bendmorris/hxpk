@@ -184,7 +184,7 @@ class TexturePackerFileProcessor extends FileProcessor {
 		});
 
 		// Pack.
-		trace(inputDir.inputFile);
+		Utils.print(inputDir.inputFile);
 		var packer:TexturePacker = new TexturePacker(root, settings);
 		for (file in files)
 			packer.addImageFile(file.inputFile);

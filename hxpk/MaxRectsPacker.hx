@@ -93,7 +93,7 @@ class MaxRectsPacker implements Packer {
 		minWidth = Std.int(Math.max(minWidth, settings.minWidth));
 		minHeight = Std.int(Math.max(minHeight, settings.minHeight));
 
-		trace("Packing");
+		Utils.print("Packing");
 
 		// Find the minimal page size that fits all rects.
 		var bestResult:Page = null;

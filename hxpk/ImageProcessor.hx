@@ -61,7 +61,7 @@ class ImageProcessor {
 		var rect:Rect = processImage(image, name);
 
 		if (rect == null) {
-			trace("Ignoring blank input image: " + name);
+			Utils.print("Ignoring blank input image: " + name);
 			return null;
 		}
 
@@ -69,7 +69,7 @@ class ImageProcessor {
 			var crc:String = hash(rect.getImage(this));
 			var existing:Rect = crcs.get(crc);
 			if (existing != null) {
-				trace(rect.name + " (alias of " + existing.name + ")");
+				Utils.print(rect.name + " (alias of " + existing.name + ")");
 				existing.aliases.set(new Alias(rect), true);
 				return null;
 			}

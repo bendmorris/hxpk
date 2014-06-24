@@ -70,12 +70,12 @@ class TexturePacker {
 
 			writeImages(packFile, pages);
 			try {
-				trace('writing packfile');
+				Utils.print('writing packfile');
 				writePackFile(packFile, pages);
 			} catch (e:Dynamic) {
 				throw "Error writing pack file: " + e;
 			}
-			trace('done');
+			Utils.print('done');
 			imageProcessor.clear();
 		}
 	}
@@ -120,7 +120,7 @@ class TexturePacker {
 
 			var canvas:BitmapData = new BitmapData(width, height, true, 0);
 
-			trace("Writing " + width + "x" + height + ": " + outputFile);
+			Utils.print("Writing " + width + "x" + height + ": " + outputFile);
 
 			for (rect in page.outputRects) {
 				var image:BitmapData = rect.getImage(imageProcessor);
@@ -323,7 +323,7 @@ class TexturePacker {
 			if (args.length > 1) output = args[1];
 			if (args.length > 2) packFileName = args[2];
 		} else {
-			trace("Usage: inputDir [outputDir] [packFileName]");
+			Utils.print("Usage: inputDir [outputDir] [packFileName]");
 			return;
 		}
 
@@ -331,7 +331,7 @@ class TexturePacker {
 			var inputDir = Path.removeTrailingSlashes(FileSystem.fullPath(input));
 			output = inputDir + "-packed";
 			FileSystem.createDirectory(output);
-			trace(output);
+			Utils.print(output);
 		}
 
 		process(input, output, packFileName);

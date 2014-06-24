@@ -9,7 +9,7 @@ class GridPacker implements Packer {
 	}
 
 	public function pack (inputRects:Array<Rect>):Array<Page> {
-		trace("Packing");
+		Utils.print("Packing");
 
 		var cellWidth:Int = 0, cellHeight:Int = 0;
 		for (i in 0 ... inputRects.length) {

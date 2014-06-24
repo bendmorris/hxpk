@@ -51,4 +51,10 @@ class Utils {
 		var item = array[n];
 		array.remove(item);
 	}
+
+	public static inline function print(s:String) {
+#if hxpk_cli
+		Sys.println(s);
+#end
+	}
 }
