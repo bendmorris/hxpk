@@ -5,6 +5,8 @@ import sys.FileSystem;
 
 
 class Utils {
+	public static inline var MAX_INT:Int = 2147483647;
+
 	static public inline function getRGBA(c:Int):Array<Int> {
 		var rgba:Array<Int> = [
 			(c >> 24) & 0xFF,
@@ -43,5 +45,10 @@ class Utils {
 			return dirParts.join('/');
 		}
 		else return Path.directory(p);
+	}
+
+	public static inline function removeIndex<T>(array:Array<T>, n:Int):Void {
+		var item = array[n];
+		array.remove(item);
 	}
 }

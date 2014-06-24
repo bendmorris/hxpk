@@ -28,11 +28,10 @@ class TexturePacker {
 				throw "If pot is true, maxHeight must be a power of two: " + settings.maxHeight;
 		}
 
-		// TODO
-		//if (settings.grid)
+		if (settings.grid)
 			packer = new GridPacker(settings);
-		//else
-			//packer = new MaxRectsPacker(settings);
+		else
+			packer = new MaxRectsPacker(settings);
 		imageProcessor = new ImageProcessor(rootDir, settings);
 	}
 
@@ -249,7 +248,7 @@ class TexturePacker {
 			for (rect in page.outputRects) {
 				writeRect(writer, page, rect, rect.name);
 				for (alias in rect.aliases.keys()) {
-					var aliasRect:Rect = rect.clone();
+					var aliasRect:Rect = Rect.clone(rect);
 					alias.apply(aliasRect);
 					writeRect(writer, page, aliasRect, alias.name);
 				}
@@ -323,7 +322,7 @@ class TexturePacker {
 
 	static public function main ():Void {
 		var args:Array<String> = Sys.args();
-		var cwd = args.splice(args.length-1, 1)[0];
+		var cwd = args.pop();
 		Sys.setCwd(cwd);
 		var input:String = null, output:String = null, packFileName:String = "pack.atlas";
 

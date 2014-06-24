@@ -4,6 +4,7 @@ import haxe.io.Path;
 import flash.display.BitmapData;
 
 
+@:allow(hxpk.MaxRects)
 class Rect {
 	public var name:String;
 	public var offsetX:Int = 0;
@@ -29,7 +30,7 @@ class Rect {
 	var score1:Int = 0;
 	var score2:Int = 0;
 
-	public function new (source:BitmapData, left:Int, top:Int, newWidth:Int, newHeight:Int, isPatch:Bool) {
+	public function new (?source:BitmapData=null, left:Int=0, top:Int=0, newWidth:Int=0, newHeight:Int=0, isPatch:Bool=false) {
 		image = source;
 		//BufferedImage(source.getColorModel(), source.getRaster().createWritableChild(left, top, newWidth, newHeight,
 		//	0, 0, null), source.getColorModel().isAlphaPremultiplied(), null);
@@ -37,8 +38,8 @@ class Rect {
 		offsetY = top;
 		regionWidth = newWidth;
 		regionHeight = newHeight;
-		originalWidth = source.width;
-		originalHeight = source.height;
+		originalWidth = source == null ? 0 : source.width;
+		originalHeight = source == null ? 0 : source.height;
 		width = newWidth;
 		height = newHeight;
 		this.isPatch = isPatch;
@@ -90,10 +91,8 @@ class Rect {
 		isPatch = rect.isPatch;
 	}
 
-	public function clone():Rect {
-		var newRect = Type.createEmptyInstance(Rect);
-		set(newRect);
-		return newRect;
+	public static function clone(rect:Rect):Rect {
+		return Reflect.copy(rect);
 	}
 
 	public function equals (other:Rect):Bool {
