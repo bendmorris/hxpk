@@ -360,6 +360,6 @@ class ImageProcessor {
 	}
 
 	static function hash (image:BitmapData):String {
-		return Sha1.encode(BitmapData.getRGBAPixels(image).toString());
+		return Sha1.encode(""+BitmapData.getRGBAPixels(image));
 	}
 }

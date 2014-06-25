@@ -8,6 +8,7 @@ import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.geom.Matrix;
+import flash.utils.ByteArray;
 
 
 class TexturePacker {
@@ -183,9 +184,9 @@ class TexturePacker {
 
 			var error:String = null;
 			try {
-				var imageData = canvas.encode(settings.outputFormat, settings.outputFormat.toLowerCase() == "jpg" ? settings.jpegQuality : 1);
+				var imageData:ByteArray = canvas.encode(settings.outputFormat, settings.outputFormat.toLowerCase() == "jpg" ? settings.jpegQuality : 1);
 				var fo:FileOutput = sys.io.File.write(outputFile, true);
-				fo.writeString(imageData.toString());
+				fo.writeBytes(imageData, 0, imageData.length);
 				fo.close();
 			} catch (e:Dynamic) {
 				error = "Error writing file " + outputFile + ": " + e;
