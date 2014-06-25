@@ -2,6 +2,5 @@
 -neko run.n
 -lib openfl
 --remap flash:openfl
-# TODO
--cp /home/ben/Dev/openfl/backends/native
+--macro openfl.Lib.includeBackend("native")
 -D hxpk_cli
