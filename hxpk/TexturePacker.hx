@@ -201,11 +201,13 @@ class TexturePacker {
 
 	static inline function copy (src:BitmapData, x:Int, y:Int, w:Int, h:Int, dst:BitmapData, dx:Int, dy:Int, rotated:Bool):Void {
 		if (rotated) {
-			var m = new Matrix();
-			m.rotate(90);
-			m.tx = x;
-			m.ty = y;
-			dst.draw(src, m, null, null, new Rectangle(dx, dy, w, h));
+			if (x != 0 || y != 0 || w != src.width || h != src.height) {
+				var bmd = new BitmapData(w, h, true, 0);
+				bmd.copyPixels(src, new Rectangle(x, y, w, h), new Point());
+				src = bmd;
+			}
+			var m = new Matrix(0, -1, 1, 0, dx, dy+w);
+			dst.draw(src, m);
 		} else {
 			dst.copyPixels(src, new Rectangle(x, y, w, h), new Point(dx, dy));
 		}
