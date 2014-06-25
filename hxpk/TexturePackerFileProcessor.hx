@@ -35,7 +35,7 @@ class TexturePackerFileProcessor extends FileProcessor {
 	}
 
 	public function processString (inputFile:String, outputRoot:String):Array<Entry> {
-		root = inputFile;
+		root = FileSystem.fullPath(inputFile);
 
 		// Collect pack.json setting files.
 		var settingsFiles:Array<String> = new Array();
@@ -43,6 +43,7 @@ class TexturePackerFileProcessor extends FileProcessor {
 		settingsProcessor.processFile = function (inputFile:Entry) {
 			settingsFiles.push(inputFile.inputFile);
 		};
+		//settingsProcessor.processDir = processDir;
 		settingsProcessor.addInputRegex(["pack\\.json"]);
 		settingsProcessor.process(inputFile, null);
 		// Sort parent first.
@@ -54,7 +55,7 @@ class TexturePackerFileProcessor extends FileProcessor {
 			var settings:Settings = null;
 			var parent:String = Utils.getParentFile(settingsFile);
 			while (true) {
-				if (parent == root) break;
+				if (parent == root || parent == '') break;
 				parent = Utils.getParentFile(parent);
 				settings = dirToSettings.get(parent);
 				if (settings != null) {
@@ -73,16 +74,16 @@ class TexturePackerFileProcessor extends FileProcessor {
 	}
 
 	private function merge (settings:Settings, settingsFile:String):Void {
-		try {
+		//try {
 			// TODO
 			var settingsContent:String = File.getContent(settingsFile);
 			var data = Json.parse(settingsContent);
 			for (field in Reflect.fields(data)) {
 				Reflect.setField(settings, field, Reflect.field(data, field));
 			}
-		} catch (e:Dynamic) {
-			throw "Error reading settings file " + settingsFile + ": " + e;
-		}
+		//} catch (e:Dynamic) {
+		//	throw "Error reading settings file " + settingsFile + ": " + e;
+		//}
 	}
 
 	override public function process (file:Dynamic, outputRoot:String):Array<Entry> {

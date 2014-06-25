@@ -123,12 +123,12 @@ class FileProcessor {
 			if (newOutputDir != null)
 				entry.outputFile = newOutputDir.length == 0 ? outputName : Path.join([newOutputDir, outputName]);
 
-			//try {
+			try {
 				processDir(entry, dirEntries);
-			//} catch (e:Dynamic) {
-			//	throw "Error processing directory " + entry.inputFile + ": " + e;
-			//}
-			allEntries.concat(dirEntries);
+			} catch (e:Dynamic) {
+				throw "Error processing directory " + entry.inputFile + ": " + e;
+			}
+			allEntries = allEntries.concat(dirEntries);
 		}
 
 		if (comparator != null) allEntries.sort(entryComparator);
@@ -156,16 +156,14 @@ class FileProcessor {
 
 		for (file in files) {
 			if (!FileSystem.isDirectory(file)) {
-				if (inputRegex.length > 0) {
-					var found:Bool = false;
-					for (pattern in inputRegex) {
-						if (pattern.match(Path.withoutDirectory(file))) {
-							found = true;
-							continue;
-						}
+				var found:Bool = false;
+				for (pattern in inputRegex) {
+					if (pattern.match(Path.withoutDirectory(file))) {
+						found = true;
+						break;
 					}
-					if (!found) continue;
 				}
+				if (!found) continue;
 
 				var dir:String = Path.directory(file);
 				//if (inputFilter != null && !inputFilter.accept(dir, Path.withoutDirectory(file))) continue;
