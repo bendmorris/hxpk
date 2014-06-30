@@ -232,7 +232,7 @@ class TexturePacker {
 			}*/
 		}
 
-		var writer:FileOutput = File.write(packFile, true);
+		var writer:FileOutput = File.append(packFile, true);
 		for (page in pages) {
 			writer.writeString("\n" + page.imageName + "\n");
 			writer.writeString("size: " + page.width + "," + page.height + "\n");

@@ -186,7 +186,8 @@ class FileProcessor {
 			}
 			if (recursive && FileSystem.isDirectory(file)) {
 				var subdir:String = FileSystem.fullPath(outputDir).length == 0 ? Path.withoutDirectory(file) : Path.join([outputDir, Path.withoutDirectory(file)]);
-				_process(FileSystem.readDirectory(file), outputRoot, subdir, dirToEntries, depth + 1);
+				var files:Array<String> = [for (f in FileSystem.readDirectory(file)) Path.join([file, f])];
+				_process(files, outputRoot, subdir, dirToEntries, depth + 1);
 			}
 		}
 	}
