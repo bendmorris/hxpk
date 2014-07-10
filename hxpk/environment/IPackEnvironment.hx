@@ -1,6 +1,8 @@
 package hxpk.environment;
 
 import haxe.io.Output;
+import flash.display.BitmapData;
+import hxpk.Settings;
 
 
 interface IPackEnvironment
@@ -16,4 +18,5 @@ interface IPackEnvironment
 
 	public function createDirectory(path:String):Void;
 	public function deleteFile(path:String):Void;
+	public function saveImage(image:BitmapData, outputFile:String, settings:Settings):Void;
 }

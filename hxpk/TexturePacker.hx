@@ -182,10 +182,7 @@ class TexturePacker {
 
 			var error:String = null;
 			try {
-				var imageData:ByteArray = canvas.encode(settings.outputFormat, settings.outputFormat.toLowerCase() == "jpg" ? settings.jpegQuality : 1);
-				var fo:Output = sys.io.File.write(outputFile, true);
-				fo.writeBytes(imageData, 0, imageData.length);
-				fo.close();
+				Settings.environment.saveImage(canvas, outputFile, settings);
 			} catch (e:Dynamic) {
 				error = "Error writing file " + outputFile + ": " + e;
 			}

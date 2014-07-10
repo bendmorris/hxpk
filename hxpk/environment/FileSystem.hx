@@ -3,6 +3,9 @@ package hxpk.environment;
 import haxe.io.Output;
 import sys.FileSystem;
 import sys.io.File;
+import flash.display.BitmapData;
+import flash.utils.ByteArray;
+import hxpk.Settings;
 
 
 class FileSystem implements IPackEnvironment
@@ -52,5 +55,13 @@ class FileSystem implements IPackEnvironment
 	public function deleteFile(path:String):Void
 	{
 		sys.FileSystem.deleteFile(path);
+	}
+
+	public function saveImage(image:BitmapData, outputFile:String, settings:Settings):Void
+	{
+		var imageData:ByteArray = image.encode(settings.outputFormat, settings.outputFormat.toLowerCase() == "jpg" ? settings.jpegQuality : 1);
+		var fo:Output = sys.io.File.write(outputFile, true);
+		fo.writeBytes(imageData, 0, imageData.length);
+		fo.close();
 	}
 }
