@@ -2,7 +2,6 @@ package hxpk;
 
 import haxe.io.Path;
 import haxe.crypto.Sha1;
-import sys.FileSystem;
 import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
@@ -25,7 +24,7 @@ class ImageProcessor {
 		this.settings = settings;
 
 		if (rootDir != null) {
-			rootPath = FileSystem.fullPath(rootDir).replace('\\', '/');
+			rootPath = Settings.environment.fullPath(rootDir).replace('\\', '/');
 			if (!rootPath.endsWith("/")) rootPath += "/";
 		}
 	}
@@ -40,7 +39,7 @@ class ImageProcessor {
 		}
 		if (image == null) throw "Unable to read image: " + file;
 
-		var name:String = FileSystem.fullPath(file).replace('\\', '/');
+		var name:String = Settings.environment.fullPath(file).replace('\\', '/');
 
 		// Strip root dir off front of image path.
 		if (rootPath != null) {

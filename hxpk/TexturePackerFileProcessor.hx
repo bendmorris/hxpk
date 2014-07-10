@@ -2,8 +2,6 @@ package hxpk;
 
 import haxe.Json;
 import haxe.io.Path;
-import sys.FileSystem;
-import sys.io.File;
 
 using Lambda;
 using StringTools;
@@ -35,7 +33,7 @@ class TexturePackerFileProcessor extends FileProcessor {
 	}
 
 	public function processString (inputFile:String, outputRoot:String):Array<Entry> {
-		root = FileSystem.fullPath(inputFile);
+		root = Settings.environment.fullPath(inputFile);
 
 		// Collect pack.json setting files.
 		var settingsFiles:Array<String> = new Array();
@@ -76,7 +74,7 @@ class TexturePackerFileProcessor extends FileProcessor {
 	private function merge (settings:Settings, settingsFile:String):Void {
 		//try {
 			// TODO
-			var settingsContent:String = File.getContent(settingsFile);
+			var settingsContent:String = Settings.environment.getContent(settingsFile);
 			var data = Json.parse(settingsContent);
 			for (field in Reflect.fields(data)) {
 				Reflect.setField(settings, field, Reflect.field(data, field));
@@ -94,11 +92,11 @@ class TexturePackerFileProcessor extends FileProcessor {
 		var files:Array<String> = cast file;
 		
 		// Delete pack file and images.
-		if (FileSystem.exists(outputRoot)) {
+		if (Settings.environment.exists(outputRoot)) {
 			// Load root settings to get scale.
 			var settingsFile:String = Path.join([root, "pack.json"]);
 			var rootSettings:Settings = defaultSettings;
-			if (FileSystem.exists(settingsFile)) {
+			if (Settings.environment.exists(settingsFile)) {
 				rootSettings = Settings.clone(rootSettings);
 				merge(rootSettings, settingsFile);
 			}
@@ -106,7 +104,7 @@ class TexturePackerFileProcessor extends FileProcessor {
 			for (i in 0 ... rootSettings.scale.length) {
 				var deleteProcessor:FileProcessor = new FileProcessor();
 				deleteProcessor.processFile = function (inputFile:Entry) {
-					FileSystem.deleteFile(inputFile.inputFile);
+					Settings.environment.deleteFile(inputFile.inputFile);
 				};
 				deleteProcessor.setRecursive(false);
 
@@ -119,7 +117,7 @@ class TexturePackerFileProcessor extends FileProcessor {
 				var dir:String = Utils.getParentFile(packFile);
 				if (dir == null)
 					deleteProcessor.process(outputRoot, null);
-				else if (FileSystem.exists(Path.join([outputRoot, dir]))) //
+				else if (Settings.environment.exists(Path.join([outputRoot, dir]))) //
 					deleteProcessor.process(outputRoot + "/" + dir, null);
 			}
 		}

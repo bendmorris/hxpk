@@ -1,9 +1,7 @@
 package hxpk;
 
 import haxe.io.Path;
-import sys.FileSystem;
-import sys.io.File;
-import sys.io.FileOutput;
+import haxe.io.Output;
 import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
@@ -51,7 +49,7 @@ class TexturePacker {
 	}
 
 	public function pack (outputDir:String, packFileName:String):Void {
-		FileSystem.createDirectory(outputDir);
+		Settings.environment.createDirectory(outputDir);
 
 		for (i in 0 ... settings.scale.length) {
 			imageProcessor.setScale(settings.scale[i]);
@@ -67,7 +65,7 @@ class TexturePacker {
 			var scaledPackFileName:String = settings.scaledPackFileName(packFileName, i);
 			var packFile:String = Path.join([outputDir, scaledPackFileName]);
 			var packDir:String = outputDir;
-			FileSystem.createDirectory(packDir);
+			Settings.environment.createDirectory(packDir);
 
 			writeImages(packFile, pages);
 			try {
@@ -114,9 +112,9 @@ class TexturePacker {
 			var outputFile:String;
 			while (true) {
 				outputFile = Path.join([packDir, imageName + (fileIndex++ == 0 ? "" : ("" + fileIndex)) + "." + settings.outputFormat]);
-				if (!FileSystem.exists(outputFile)) break;
+				if (!Settings.environment.exists(outputFile)) break;
 			}
-			FileSystem.createDirectory(packDir);
+			Settings.environment.createDirectory(packDir);
 			page.imageName = Path.withoutDirectory(outputFile);
 
 			var canvas:BitmapData = new BitmapData(width, height, true, 0);
@@ -185,7 +183,7 @@ class TexturePacker {
 			var error:String = null;
 			try {
 				var imageData:ByteArray = canvas.encode(settings.outputFormat, settings.outputFormat.toLowerCase() == "jpg" ? settings.jpegQuality : 1);
-				var fo:FileOutput = sys.io.File.write(outputFile, true);
+				var fo:Output = sys.io.File.write(outputFile, true);
 				fo.writeBytes(imageData, 0, imageData.length);
 				fo.close();
 			} catch (e:Dynamic) {
@@ -215,7 +213,7 @@ class TexturePacker {
 	}
 
 	private function writePackFile (packFile:String, pages:Array<Page>):Void {
-		if (FileSystem.exists(packFile)) {
+		if (Settings.environment.exists(packFile)) {
 			// Make sure there aren't duplicate names.
 			// TODO
 			/*TextureAtlasData textureAtlasData = new TextureAtlasData(new FileHandle(packFile), new FileHandle(packFile), false);
@@ -232,7 +230,7 @@ class TexturePacker {
 			}*/
 		}
 
-		var writer:FileOutput = File.append(packFile, true);
+		var writer:Output = Settings.environment.append(packFile);
 		for (page in pages) {
 			writer.writeString("\n" + page.imageName + "\n");
 			writer.writeString("size: " + page.width + "," + page.height + "\n");
@@ -252,7 +250,7 @@ class TexturePacker {
 		writer.close();
 	}
 
-	private function writeRect (writer:FileOutput, page:Page, rect:Rect, name:String):Void {
+	private function writeRect (writer:Output, page:Page, rect:Rect, name:String):Void {
 		writer.writeString(Rect.getAtlasName(name, settings.flattenPaths) + "\n");
 		writer.writeString("  rotate: " + rect.rotated + "\n");
 		writer.writeString("  xy: " + (page.x + rect.x) + ", " + (page.y + page.height - rect.height - rect.y) + "\n");
@@ -302,12 +300,12 @@ class TexturePacker {
 	static public function isModified (input:String, output:String, packFileName:String):Bool {
 		var outputFile:String = output;
 		outputFile = Path.join([outputFile, packFileName]);
-		if (!FileSystem.exists(outputFile)) return true;
+		if (!Settings.environment.exists(outputFile)) return true;
 
 		var inputFile:String = input;
-		if (!FileSystem.exists(inputFile)) throw "Input file does not exist: " + inputFile;
-		var inputFileLastModified = FileSystem.stat(inputFile).mtime.getTime();
-		var outputFileLastModified = FileSystem.stat(outputFile).mtime.getTime();
+		if (!Settings.environment.exists(inputFile)) throw "Input file does not exist: " + inputFile;
+		var inputFileLastModified = Settings.environment.getModifiedTime(inputFile);
+		var outputFileLastModified = Settings.environment.getModifiedTime(outputFile);
 		return inputFileLastModified > outputFileLastModified;
 	}
 
@@ -316,6 +314,8 @@ class TexturePacker {
 	}
 
 	static public function main ():Void {
+		Settings.environment = new hxpk.environment.FileSystem();
+
 		var args:Array<String> = Sys.args();
 		var cwd = args.pop();
 		Sys.setCwd(cwd);
@@ -331,9 +331,9 @@ class TexturePacker {
 		}
 
 		if (output == null) {
-			var inputDir = Path.removeTrailingSlashes(FileSystem.fullPath(input));
+			var inputDir = Path.removeTrailingSlashes(Settings.environment.fullPath(input));
 			output = inputDir + "-packed";
-			FileSystem.createDirectory(output);
+			Settings.environment.createDirectory(output);
 			Utils.print(output);
 		}
 

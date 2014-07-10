@@ -1,7 +1,6 @@
 package hxpk;
 
 import haxe.io.Path;
-import sys.FileSystem;
 
 
 class Utils {
@@ -38,7 +37,7 @@ class Utils {
 	}
 
 	public static inline function getParentFile (p:String):String {
-		if (FileSystem.exists(p) && FileSystem.isDirectory(p)) {
+		if (Settings.environment.exists(p) && Settings.environment.isDirectory(p)) {
 			// TODO: return parent directory
 			var dirParts = p.split('/');
 			dirParts = dirParts.slice(0, dirParts.length - 1);

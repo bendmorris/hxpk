@@ -1,7 +1,6 @@
 package hxpk;
 
 import haxe.io.Path;
-import sys.FileSystem;
 
 
 /** Collects files recursively, filtering by file name. Callbacks are provided to process files and the results are collected,
@@ -86,10 +85,10 @@ class FileProcessor {
 		var files:Array<String>;
 		if (Std.is(file, String)) {
 			var inputFile:String = cast(file, String);
-			if (!FileSystem.exists(inputFile)) throw "Input file does not exist: " + inputFile;
-			if (FileSystem.isDirectory(inputFile)) {
-				files = [for (f in FileSystem.readDirectory(inputFile))
-					Path.join([FileSystem.fullPath(inputFile), f])];
+			if (!Settings.environment.exists(inputFile)) throw "Input file does not exist: " + inputFile;
+			if (Settings.environment.isDirectory(inputFile)) {
+				files = [for (f in Settings.environment.readDirectory(inputFile))
+					Path.join([Settings.environment.fullPath(inputFile), f])];
 			} else
 				files = [inputFile];
 		} else {
@@ -155,7 +154,7 @@ class FileProcessor {
 		}
 
 		for (file in files) {
-			if (!FileSystem.isDirectory(file)) {
+			if (!Settings.environment.isDirectory(file)) {
 				var found:Bool = false;
 				for (pattern in inputRegex) {
 					if (pattern.match(Path.withoutDirectory(file))) {
@@ -184,9 +183,9 @@ class FileProcessor {
 
 				dirToEntries.get(dir).push(entry);
 			}
-			if (recursive && FileSystem.isDirectory(file)) {
-				var subdir:String = FileSystem.fullPath(outputDir).length == 0 ? Path.withoutDirectory(file) : Path.join([outputDir, Path.withoutDirectory(file)]);
-				var files:Array<String> = [for (f in FileSystem.readDirectory(file)) Path.join([file, f])];
+			if (recursive && Settings.environment.isDirectory(file)) {
+				var subdir:String = Settings.environment.fullPath(outputDir).length == 0 ? Path.withoutDirectory(file) : Path.join([outputDir, Path.withoutDirectory(file)]);
+				var files:Array<String> = [for (f in Settings.environment.readDirectory(file)) Path.join([file, f])];
 				_process(files, outputRoot, subdir, dirToEntries, depth + 1);
 			}
 		}

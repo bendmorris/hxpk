@@ -1,9 +1,13 @@
 package hxpk;
 
+import hxpk.environment.IPackEnvironment;
+
 using StringTools;
 
 
 class Settings {
+	public static var environment:IPackEnvironment;
+
 	public var pot:Bool = true;
 	public var paddingX:Int = 2;
 	public var paddingY:Int = 2;
