@@ -301,9 +301,7 @@ class TexturePacker {
 
 		var inputFile:String = input;
 		if (!Settings.environment.exists(inputFile)) throw "Input file does not exist: " + inputFile;
-		var inputFileLastModified = Settings.environment.getModifiedTime(inputFile);
-		var outputFileLastModified = Settings.environment.getModifiedTime(outputFile);
-		return inputFileLastModified > outputFileLastModified;
+		return Settings.environment.newerThan(inputFile, outputFile);
 	}
 
 	static public function processIfModified (input:String, output:String, packFileName:String, ?settings:Settings=null):Void {

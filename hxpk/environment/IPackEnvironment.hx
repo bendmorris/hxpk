@@ -9,7 +9,7 @@ interface IPackEnvironment
 {
 	public function exists(path:String):Bool;
 	public function isDirectory(path:String):Bool;
-	public function getModifiedTime(path:String):Float;
+	public function newerThan(file1:String, file2:String):Bool;
 	public function fullPath(path:String):String;
 	public function readDirectory(path:String):Array<String>;
 	public function getContent(path:String):String;

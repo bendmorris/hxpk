@@ -22,9 +22,14 @@ class FileSystem implements IPackEnvironment
 		return sys.FileSystem.isDirectory(path);
 	}
 
-	public function getModifiedTime(path:String):Float
+	inline function getModifiedTime(path:String):Float
 	{
 		return sys.FileSystem.stat(path).mtime.getTime();
+	}
+
+	public function newerThan(file1:String, file2:String)
+	{
+		return getModifiedTime(file1) > getModifiedTime(file2);
 	}
 
 	public function fullPath(path:String):String
