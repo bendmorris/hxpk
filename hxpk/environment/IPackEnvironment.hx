@@ -18,5 +18,7 @@ interface IPackEnvironment
 
 	public function createDirectory(path:String):Void;
 	public function deleteFile(path:String):Void;
+
+	public function loadImage(path:String):BitmapData;
 	public function saveImage(image:BitmapData, outputFile:String, settings:Settings):Void;
 }

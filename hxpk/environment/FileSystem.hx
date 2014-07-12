@@ -62,6 +62,11 @@ class FileSystem implements IPackEnvironment
 		sys.FileSystem.deleteFile(path);
 	}
 
+	public function loadImage(path:String):BitmapData
+	{
+		return BitmapData.load(path);
+	}
+
 	public function saveImage(image:BitmapData, outputFile:String, settings:Settings):Void
 	{
 		var imageData:ByteArray = image.encode(settings.outputFormat, settings.outputFormat.toLowerCase() == "jpg" ? settings.jpegQuality : 1);

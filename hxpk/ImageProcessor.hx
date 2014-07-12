@@ -33,7 +33,7 @@ class ImageProcessor {
 	public function addImageFile (file:String):Void {
 		var image:BitmapData;
 		try {
-			image = BitmapData.load(file);
+			image = Settings.environment.loadImage(file);
 		} catch (e:Dynamic) {
 			throw "Error reading image " + file + ": " + e;
 		}
