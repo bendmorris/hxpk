@@ -74,4 +74,9 @@ class FileSystem implements IPackEnvironment
 		fo.writeBytes(imageData, 0, imageData.length);
 		fo.close();
 	}
+
+	public function setCwd(path:String):Void
+	{
+		Sys.setCwd(path);
+	}
 }

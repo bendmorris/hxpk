@@ -69,7 +69,7 @@ class TexturePacker {
 
 			writeImages(packFile, pages);
 			try {
-				Utils.print('writing packfile');
+				Utils.print('writing packfile: ' + packFile);
 				writePackFile(packFile, pages);
 			} catch (e:Dynamic) {
 				throw "Error writing pack file: " + e;
@@ -313,7 +313,7 @@ class TexturePacker {
 
 		var args:Array<String> = Sys.args();
 		var cwd = args.pop();
-		Sys.setCwd(cwd);
+		Settings.environment.setCwd(cwd);
 		var input:String = null, output:String = null, packFileName:String = "pack.atlas";
 
 		if (args.length > 0) {

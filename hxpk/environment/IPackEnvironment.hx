@@ -21,4 +21,6 @@ interface IPackEnvironment
 
 	public function loadImage(path:String):BitmapData;
 	public function saveImage(image:BitmapData, outputFile:String, settings:Settings):Void;
+
+	public function setCwd(path:String):Void;
 }

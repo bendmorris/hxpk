@@ -6,8 +6,6 @@ all features of the original, including whitespace removal, alpha bleed
 correction, and more. You can read more about the original on the [libGDX GitHub 
 wiki](https://github.com/libgdx/libgdx/wiki/Texture-packer).
 
-[Note: the following section isn't fully implemented yet!]
-
 hxpk can also be used to create textures from in-memory BitmapDatas at runtime. 
 In other words, you can generate images after a program has started (for 
 example, using the svg library to rasterize an SVG at an appropriate resolution 
@@ -19,11 +17,27 @@ hxpk currently requires OpenFL and uses BitmapData for image processing.
 Using hxpk
 ----------
 
-You can run hxpk with:
+You can run hxpk from the command line with:
 
     haxelib run hxpk
 
 If no other arguments are supplied, usage instructions will be displayed.
+
+hxpk can also be used at runtime:
+
+    hxpk.Settings.environment = new hxpk.environment.OpenFL();
+    hxpk.TexturePacker.process("graphics/pack", "graphics-packed", "pack.atlas");
+
+This will pack the assets included in "graphics/pack" in the asset manager, 
+putting the atlas in "graphics-packed." You can then access the pack file and 
+images using:
+
+    var packFile = openfl.Assets.getText("hxpk:graphics-packed/pack.atlas");
+    var atlas = oepnfl.Assets.getBitmapData("hxpk:graphics-packed/pack.png");
+
+The OpenFL asset paths will be treated as a filesystem with directories. The 
+directories will be recursively processed, and pack.json files that are embedded 
+in these directories will be read.
 
 
 Settings
