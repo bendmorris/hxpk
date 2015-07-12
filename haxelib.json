@@ -5,6 +5,7 @@
 	"tags": [],
 	"description": "A Haxe port of the libGDX TexturePacker tool.",
 	"version": "0.1.0",
+	"releasenote": "Initial release.",
 	"contributors": ["bendmorris"],
 	"dependencies": {
 		"openfl": ""
