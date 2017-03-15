@@ -12,6 +12,8 @@ class ColorBleedEffect {
 
 	var color:ARGBColor = new ARGBColor();
 
+	public function new() {}
+
 	public function processImage (image:BitmapData, maxIterations:Int):BitmapData {
 		var width:Int = image.width;
 		var height:Int = image.height;

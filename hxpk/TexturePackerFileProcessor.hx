@@ -18,6 +18,8 @@ class TexturePackerFileProcessor extends FileProcessor {
 	var ignoreDirs:Array<String> = new Array();
 
 	public function new (defaultSettings:Settings = null, packFileName:String = "pack.atlas") {
+		super();
+
 		if (defaultSettings == null) defaultSettings = new Settings();
 
 		this.defaultSettings = defaultSettings;

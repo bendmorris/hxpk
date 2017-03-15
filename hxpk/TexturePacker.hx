@@ -109,7 +109,7 @@ class TexturePacker {
 			width = Std.int(Math.max(settings.minWidth, width));
 			height = Std.int(Math.max(settings.minHeight, height));
 
-			var outputFile:String;
+			var outputFile:String = "";
 			while (true) {
 				outputFile = Path.join([packDir, imageName + (fileIndex++ == 0 ? "" : ("" + fileIndex)) + "." + settings.outputFormat]);
 				if (!Settings.environment.exists(outputFile)) break;

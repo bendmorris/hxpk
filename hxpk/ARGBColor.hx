@@ -4,6 +4,8 @@ package hxpk;
 class ARGBColor {
 	public var argb:Int = 0xff000000;
 
+	public function new() {}
+
 	public function red ():Int {
 		return (argb >> 16) & 0xFF;
 	}

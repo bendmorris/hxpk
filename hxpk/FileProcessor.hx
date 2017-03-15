@@ -23,6 +23,8 @@ class FileProcessor {
 		return Utils.stringCompare(o1.inputFile, o2.inputFile);
 	};
 
+	public function new() {}
+
 	/** Copy constructor. */
 	public static function clone (processor:FileProcessor):FileProcessor {
 		var newProcessor = Type.createEmptyInstance(FileProcessor);
