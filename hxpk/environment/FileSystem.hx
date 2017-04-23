@@ -34,12 +34,14 @@ class FileSystem implements IPackEnvironment
 
 	public function fullPath(path:String):String
 	{
-		return sys.FileSystem.fullPath(path);
+		return sys.FileSystem.absolutePath(path);
 	}
 
 	public function readDirectory(path:String):Array<String>
 	{
-		return sys.FileSystem.readDirectory(path);
+		var files = sys.FileSystem.readDirectory(path);
+		files.sort(function(a, b) { if (a < b) return -1; else if (a > b) return 1; else return 0;});
+		return files;
 	}
 
 	public function getContent(path:String):String

@@ -92,7 +92,7 @@ class TexturePackerFileProcessor extends FileProcessor {
 		}
 		
 		var files:Array<String> = cast file;
-		
+
 		// Delete pack file and images.
 		if (Settings.environment.exists(outputRoot)) {
 			// Load root settings to get scale.
@@ -150,8 +150,9 @@ class TexturePackerFileProcessor extends FileProcessor {
 			processor.processFile = function (entry:Entry) {
 				addProcessedFile(entry);
 			};
-			
-			files = processor.process(inputDir.inputFile, null);
+
+			processor.process(inputDir.inputFile, null);
+			files = outputFiles;
 		}
 
 		if (files.length == 0) return;

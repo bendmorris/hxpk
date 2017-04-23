@@ -1,5 +1,6 @@
 package hxpk;
 
+import Map;
 import haxe.io.Path;
 
 
@@ -27,7 +28,7 @@ class FileProcessor {
 
 	/** Copy constructor. */
 	public static function clone (processor:FileProcessor):FileProcessor {
-		var newProcessor = Type.createEmptyInstance(FileProcessor);
+		var newProcessor = Type.createInstance(Type.getClass(processor), []);
 		//newProcessor.inputFilter = processor.inputFilter;
 		newProcessor.comparator = processor.comparator;
 		newProcessor.inputRegex.concat(processor.inputRegex);
@@ -86,7 +87,7 @@ class FileProcessor {
 	public function process (file:Dynamic, outputRoot:String):Array<Entry> {
 		var files:Array<String>;
 		if (Std.is(file, String)) {
-			var inputFile:String = cast(file, String);
+			var inputFile:String = Settings.environment.fullPath(cast file);
 			if (!Settings.environment.exists(inputFile)) throw "Input file does not exist: " + inputFile;
 			if (Settings.environment.isDirectory(inputFile)) {
 				files = [for (f in Settings.environment.readDirectory(inputFile))
@@ -100,12 +101,12 @@ class FileProcessor {
 		if (outputRoot == null) outputRoot = "";
 		outputFiles.splice(0, outputFiles.length);
 
-		var dirToEntries:Map<String, Array<Entry>> = new Map();
+		var dirToEntries:OrderedMap<String, Array<Entry>> = new OrderedMap(new Map<String, Array<Entry>>());
 		_process(files, outputRoot, outputRoot, dirToEntries, 0);
 
 		var allEntries:Array<Entry> = new Array();
 		for (inputDir in dirToEntries.keys()) {
-			var mapEntry:Array<Entry> = dirToEntries[inputDir];
+			var mapEntry:Array<Entry> = dirToEntries.get(inputDir);
 
 			var dirEntries:Array<Entry> = mapEntry;
 			if (comparator != null) dirEntries.sort(entryComparator);
@@ -144,7 +145,7 @@ class FileProcessor {
 		return outputFiles;
 	}
 
-	function _process (files:Array<String>, outputRoot:String, outputDir:String, dirToEntries:Map<String, Array<Entry>>, depth:Int) {
+	function _process (files:Array<String>, outputRoot:String, outputDir:String, dirToEntries:IMap<String, Array<Entry>>, depth:Int) {
 		// Store empty entries for every directory.
 		for (file in files) {
 			var dir:String = Path.directory(file);
