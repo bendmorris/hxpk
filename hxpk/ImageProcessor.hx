@@ -359,6 +359,6 @@ class ImageProcessor {
 	}
 
 	static function hash (image:BitmapData):String {
-		return Sha1.encode(""+BitmapData.getRGBAPixels(image));
+		return Sha1.encode(""+image.getPixels());
 	}
 }
