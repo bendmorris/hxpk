@@ -91,8 +91,10 @@ class Rect {
 		isPatch = rect.isPatch;
 	}
 
-	public static function clone(rect:Rect):Rect {
-		return Reflect.copy(rect);
+	public static function clone(original:Rect):Rect {
+		var rect = new Rect();
+		rect.copy(original);
+		return rect;
 	}
 
 	public function equals (other:Rect):Bool {
